@@ -32,4 +32,7 @@ Our intention is to migrate to lense protocal, or somthing simular, once they op
 
 ## Gas Benifits
 ![rough-estimate](https://user-images.githubusercontent.com/47055562/183977173-1507bee7-12de-456c-b00f-e17f5ac6d0eb.png)
-Demonstration of gas saved vs storing profiles as mapping(address > profile). Note price is for ETH
+
+Demonstration of gas saved vs storing profiles as mapping(address > profile). 
+
+> Note: price is for Ethereum in GBP £
