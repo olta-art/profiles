@@ -1,6 +1,7 @@
 import { HardhatUserConfig } from "hardhat/config";
 import "@nomicfoundation/hardhat-toolbox";
 import "hardhat-gas-reporter";
+import networks from "./networks";
 import dotenv from 'dotenv';
 
 dotenv.config();
@@ -13,6 +14,7 @@ const config: HardhatUserConfig = {
     gasPrice: 120,
     coinmarketcap: process.env.COINMARKETCAP_KEY,
   },
+  networks
 };
 
 export default config;
