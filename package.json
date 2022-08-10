@@ -1,4 +1,9 @@
 {
+  "scripts": {
+    "test": "hardhat test",
+    "typechain": "hardhat typechain",
+    "compile": "hardhat compile"
+  },
   "devDependencies": {
     "@ethersproject/abi": "^5.4.7",
     "@ethersproject/providers": "^5.4.7",
