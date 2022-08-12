@@ -1,9 +1,11 @@
 import { loadFixture } from "@nomicfoundation/hardhat-network-helpers";
 import { expect } from "chai";
-import { ethers } from "hardhat";
+import { ethers, network } from "hardhat";
 
 import { Profiles } from "../typechain-types"
 import { SignerWithAddress } from "@nomiclabs/hardhat-ethers/signers";
+
+const oneHour = 3600
 
 const profile: Profiles.ProfileStruct = {
   name: "olta",
@@ -22,9 +24,11 @@ const deployProfilesFixture = async () => {
 describe("Profiles", () => {
   let profiles: Profiles
   let user: SignerWithAddress
+  let other: SignerWithAddress
 
   beforeEach(async () => {
     user = (await ethers.getSigners())[0]
+    other = (await ethers.getSigners())[1]
     profiles = await loadFixture(deployProfilesFixture)
   })
 
@@ -36,6 +40,44 @@ describe("Profiles", () => {
           user.address,
           Object.values(profile)
         )
+    })
+
+    describe("rate limit", () => {
+      it("reverts if called more than once an hour by the same address", async () => {
+        // call once
+        await expect (profiles.connect(user).update(profile))
+          .to.emit(profiles, "updated")
+
+        // call second time
+        await expect(profiles.connect(user).update(profile))
+          .to.be.revertedWith("profiles can only be updated once per hour")
+
+        // call from another wallet
+        await expect (profiles.connect(other).update(profile))
+          .to.emit(profiles, "updated")
+      })
+
+      it("emits profile data again once an hour has passed", async () => {
+        // call once
+        await expect (profiles.connect(user).update(profile))
+          .to.emit(profiles, "updated")
+
+        // call second time
+        await expect(profiles.connect(user).update(profile))
+          .to.be.reverted
+
+        // mine an hour in time
+        await network.provider.send("evm_increaseTime", [oneHour])
+        await network.provider.send("evm_mine")
+
+        // call third time
+        await expect(profiles.connect(user).update(profile))
+          .to.emit(profiles, "updated")
+          .withArgs(
+            user.address,
+            Object.values(profile)
+          )
+      })
     })
   })
 })

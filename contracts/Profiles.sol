@@ -23,15 +23,32 @@ contract Profiles {
         Profile profile
     );
 
+    uint256 internal rate = 3600; // 1 hour
+    mapping (address => uint) internal lastUpdated;
+
+    modifier rateLimit() {
+        require(
+            (block.timestamp - lastUpdated[msg.sender]) > rate,
+            "profiles can only be updated once per hour"
+        );
+        _;
+    }
+
     /**
     * @notice emits updated event with caller along with the profile calldata
+    * rate limted to once per hour
     * @param profile a struct containing profile data
     *      name: a display name for the user
     *      description: a description about the user
     *      thumbnailURI: a URI to a thumnail image for the user
     *      linkURI: a URI to external profile or website
     */
-    function update(Profile calldata profile) external {
+    function update(Profile calldata profile)
+        external
+        rateLimit
+    {
+        lastUpdated[msg.sender] = block.timestamp;
+
         emit updated(msg.sender, profile);
     }
 }
