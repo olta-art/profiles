@@ -10,6 +10,8 @@ const config: HardhatUserConfig = {
   defaultNetwork: 'hardhat',
   solidity: "0.8.9",
   gasReporter: {
+    token: "MATIC",
+    gasPriceApi: "https://api.polygonscan.com/api?module=proxy&action=eth_gasPrice",
     currency: 'GBP',
     gasPrice: 120,
     coinmarketcap: process.env.COINMARKETCAP_KEY,
