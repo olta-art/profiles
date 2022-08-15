@@ -79,5 +79,64 @@ describe("Profiles", () => {
           )
       })
     })
+
+    describe.only("length limits", () => {
+      const encoder = new TextEncoder()
+
+      it("reverts if name is longer than 32 bytes", async () => {
+        const longName = "Lorem-ipsum-dolor-sit-amet-duis-1"
+        expect(encoder.encode(longName).length).to.eq(33)
+
+        await expect(
+          profiles.connect(user).update(
+          {
+            ...profile,
+            name: longName
+          }
+        )).to.be.revertedWith("name too long")
+      })
+
+      it("reverts if descrition is longer than 256 bytes", async () => {
+        const longDescription = `Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+Morbi fringilla lacinia sodales. Fusce vitae eros pharetra nibh placerat
+dapibus vitae porta magna. Donec cursus odio et aliquam lacinia. Fusce nisl
+tellus, pellentesque nec vehicula at, euismode sitt`
+        expect(encoder.encode(longDescription).length).to.eq(257)
+
+        await expect(
+          profiles.connect(user).update(
+          {
+            ...profile,
+            description: longDescription
+          }
+        )).to.be.revertedWith("description too long")
+      })
+
+      it("reverts if link uri is longer than 2048 bytes", async () => {
+        const longURI = new Uint8Array(2049)
+        expect(longURI.length).to.eq(2049)
+
+        await expect(
+          profiles.connect(user).update(
+          {
+            ...profile,
+            linkURI: String(longURI)
+          }
+        )).to.be.revertedWith("link uri too long")
+      })
+
+      it("reverts if thumbnail uri is longer than 2048 bytes", async () => {
+        const longURI = new Uint8Array(2049)
+        expect(longURI.length).to.eq(2049)
+
+        await expect(
+          profiles.connect(user).update(
+          {
+            ...profile,
+            thumbnailURI: String(longURI)
+          }
+        )).to.be.revertedWith("thumbnail uri too long")
+      })
+    })
   })
 })
