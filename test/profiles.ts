@@ -80,7 +80,7 @@ describe("Profiles", () => {
       })
     })
 
-    describe.only("length limits", () => {
+    describe("size limits", () => {
       const encoder = new TextEncoder()
 
       it("reverts if name is longer than 32 bytes", async () => {
