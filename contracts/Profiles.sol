@@ -48,7 +48,7 @@ contract Profiles {
         rateLimit
     {
         require(bytes(profile.name).length         < 32,   "name too long");
-        require(bytes(profile.description).length  < 256,  "description too long");
+        require(bytes(profile.description).length  < 512,  "description too long");
         require(bytes(profile.thumbnailURI).length < 2048, "thumbnail uri too long");
         require(bytes(profile.linkURI).length      < 2048, "link uri too long");
 
