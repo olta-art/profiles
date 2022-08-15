@@ -17,6 +17,9 @@ const config: HardhatUserConfig = {
     gasPrice: 120,
     coinmarketcap: process.env.COINMARKETCAP_KEY,
   },
+  namedAccounts: {
+    deployer: 0,
+  },
   networks
 };
 
