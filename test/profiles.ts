@@ -35,7 +35,7 @@ describe("Profiles", () => {
   describe("#update", () => {
     it("emits profile data", async () => {
       await expect(profiles.connect(user).update(profile))
-        .to.emit(profiles, "updated")
+        .to.emit(profiles, "Updated")
         .withArgs(
           user.address,
           Object.values(profile)
@@ -46,7 +46,7 @@ describe("Profiles", () => {
       it("reverts if called more than once an hour by the same address", async () => {
         // call once
         await expect (profiles.connect(user).update(profile))
-          .to.emit(profiles, "updated")
+          .to.emit(profiles, "Updated")
 
         // call second time
         await expect(profiles.connect(user).update(profile))
@@ -54,13 +54,13 @@ describe("Profiles", () => {
 
         // call from another wallet
         await expect (profiles.connect(other).update(profile))
-          .to.emit(profiles, "updated")
+          .to.emit(profiles, "Updated")
       })
 
       it("emits profile data again once an hour has passed", async () => {
         // call once
         await expect (profiles.connect(user).update(profile))
-          .to.emit(profiles, "updated")
+          .to.emit(profiles, "Updated")
 
         // call second time
         await expect(profiles.connect(user).update(profile))
@@ -72,7 +72,7 @@ describe("Profiles", () => {
 
         // call third time
         await expect(profiles.connect(user).update(profile))
-          .to.emit(profiles, "updated")
+          .to.emit(profiles, "Updated")
           .withArgs(
             user.address,
             Object.values(profile)
