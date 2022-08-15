@@ -79,5 +79,68 @@ describe("Profiles", () => {
           )
       })
     })
+
+    describe("size limits", () => {
+      const encoder = new TextEncoder()
+
+      it("reverts if name is longer than 32 bytes", async () => {
+        const longName = "Lorem-ipsum-dolor-sit-amet-duis-1"
+        expect(encoder.encode(longName).length).to.eq(33)
+
+        await expect(
+          profiles.connect(user).update(
+          {
+            ...profile,
+            name: longName
+          }
+        )).to.be.revertedWith("name too long")
+      })
+
+      it("reverts if descrition is longer than 512 bytes", async () => {
+        const longDescription = `Lorem ipsum dolor sit amet, consectetur
+adipiscing elit. Sed blandit arcu sed placerat pharetra. Aliquam mollis mi
+vel magna fringilla consequat. Nulla feugiat rutrum ornare. Vivamus eu
+porta nulla, pulvinar ultricies odio. Proin volutpat eros sed quam imperdiet,
+nec dapibus diam lacinia. Etiam dolor dolor, gravida id semper ut, dapibus a
+felis. Curabitur pretium enim ut metus ultrices, ac pretium turpis auctor.
+Proin ornare venenatis nibh, eu molestie arcu sagittis sed. Vestibulum sed tellus
+quis nisi quis.`
+        expect(encoder.encode(longDescription).length).to.eq(513)
+
+        await expect(
+          profiles.connect(user).update(
+          {
+            ...profile,
+            description: longDescription
+          }
+        )).to.be.revertedWith("description too long")
+      })
+
+      it("reverts if link uri is longer than 2048 bytes", async () => {
+        const longURI = new Uint8Array(2049)
+        expect(longURI.length).to.eq(2049)
+
+        await expect(
+          profiles.connect(user).update(
+          {
+            ...profile,
+            linkURI: String(longURI)
+          }
+        )).to.be.revertedWith("link uri too long")
+      })
+
+      it("reverts if thumbnail uri is longer than 2048 bytes", async () => {
+        const longURI = new Uint8Array(2049)
+        expect(longURI.length).to.eq(2049)
+
+        await expect(
+          profiles.connect(user).update(
+          {
+            ...profile,
+            thumbnailURI: String(longURI)
+          }
+        )).to.be.revertedWith("thumbnail uri too long")
+      })
+    })
   })
 })
