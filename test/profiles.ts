@@ -96,12 +96,16 @@ describe("Profiles", () => {
         )).to.be.revertedWith("name too long")
       })
 
-      it("reverts if descrition is longer than 256 bytes", async () => {
-        const longDescription = `Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-Morbi fringilla lacinia sodales. Fusce vitae eros pharetra nibh placerat
-dapibus vitae porta magna. Donec cursus odio et aliquam lacinia. Fusce nisl
-tellus, pellentesque nec vehicula at, euismode sitt`
-        expect(encoder.encode(longDescription).length).to.eq(257)
+      it("reverts if descrition is longer than 512 bytes", async () => {
+        const longDescription = `Lorem ipsum dolor sit amet, consectetur
+adipiscing elit. Sed blandit arcu sed placerat pharetra. Aliquam mollis mi
+vel magna fringilla consequat. Nulla feugiat rutrum ornare. Vivamus eu
+porta nulla, pulvinar ultricies odio. Proin volutpat eros sed quam imperdiet,
+nec dapibus diam lacinia. Etiam dolor dolor, gravida id semper ut, dapibus a
+felis. Curabitur pretium enim ut metus ultrices, ac pretium turpis auctor.
+Proin ornare venenatis nibh, eu molestie arcu sagittis sed. Vestibulum sed tellus
+quis nisi quis.`
+        expect(encoder.encode(longDescription).length).to.eq(513)
 
         await expect(
           profiles.connect(user).update(
