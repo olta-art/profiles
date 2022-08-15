@@ -18,7 +18,7 @@ contract Profiles {
         string linkURI;
     }
 
-    event updated(
+    event Updated(
         address user,
         Profile profile
     );
@@ -54,6 +54,6 @@ contract Profiles {
 
         lastUpdated[msg.sender] = block.timestamp;
 
-        emit updated(msg.sender, profile);
+        emit Updated(msg.sender, profile);
     }
 }
