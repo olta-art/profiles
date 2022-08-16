@@ -1,38 +1,51 @@
 # Profiles
 
-A simple contract to manage profiles on Olta in a decentrilized way.
+A simple contract to manage profiles on Olta in a decentralized way.
 
-By calling `update` the profile is signaled for that wallet address by emitting an `updated` event. This event is then indexed by a subgraph.
+By calling `update` the profile is signalled for that wallet address by emitting an `Updated` event. This event is then indexed by a subgraph and used on our front end website. The data will also be accessible to creators building dynamic nft's.
 
 There is no state stored on-chain but the events will be. This saves on gas.
 
-Other smart contracts cannot read events directly but event data is completely public and there for as long as the block-chain exists.
+Other smart contracts cannot read events directly but event data is completely public and will exist for as long as the block-chain does.
 
 ## Profile
 
-The `updated` event emits the following:
+The `Updated` event emits the following:
   - user: wallet address
   - profile
     - name: a display name for the user
     - description: a description about the user
-    - thumbnailURI: a URI to a thumnail image for the user
+    - thumbnailURI: a URI to a thumbnail image for the user
     - linkURI: a URI to external profile or website
 
-This data will be indexed by olta's subgraph and then be used to display profiles on [beta.olta.art](https://beta.olta.art). It also makes profile data availble for projects and editions.
+This data will be indexed by olta's subgraph and then be used to display profiles on [beta.olta.art](https://beta.olta.art). It also makes profile data available for projects and editions.
+
+### Limits
+
+The contract is rate limited to one update per hour per wallet.
+
+The profile property's have been limited to the following sizes
+|property|limit (bytes)|
+|---|---|
+|name|32|
+|description|512|
+|thumbnailURI|2048|
+|linkURI|2048|
+
 
 ## This is a test
-Our intention is to migrate to lense protocal, or somthing simular, once they open it up a bit more.
+Our intention is to migrate to lens protocol, or something similar, once they open it up a bit more.
 
 ## Deployments
 
-| chain | adress |
+| chain | address |
 |---|---|
-|mumbai| coming soon|
-|polyogon| coming soon|
+|mumbai| [0x6615fbCf647208f131AA6CBA3bA274391E2aF8AE](https://mumbai.polygonscan.com/address/0x6615fbCf647208f131AA6CBA3bA274391E2aF8AE) |
+|polygon| [0x84595971a754120C390AB2901b11f7C3d18207C9](https://polygonscan.com/address/0x84595971a754120C390AB2901b11f7C3d18207C9) |
 
-## Gas Benifits
-![rough-estimate](https://user-images.githubusercontent.com/47055562/183977173-1507bee7-12de-456c-b00f-e17f5ac6d0eb.png)
+## Gas Benefits
 
-Demonstration of gas saved vs storing profiles as mapping(address > profile). 
-
-> Note: price is for Ethereum in GBP £
+| Contract | Function | gas cost |
+|---|---|---|
+| ERC721A | Mint | 76,690 |
+| **Profiles** | **Update** | **54,985** |
