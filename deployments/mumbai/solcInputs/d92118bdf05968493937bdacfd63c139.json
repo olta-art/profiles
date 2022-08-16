@@ -1,0 +1,35 @@
+{
+  "language": "Solidity",
+  "sources": {
+    "contracts/Profiles.sol": {
+      "content": "// SPDX-License-Identifier: GPL-3.0\npragma solidity ^0.8.9;\n\n\n/**\n* @title Profiles\n* @author Olta\n*\n* @notice This is a simple way to add profile data to the blockchain.\n*/\n\ncontract Profiles {\n\n    struct Profile {\n        string name;\n        string description;\n        string thumbnailURI;\n        string linkURI;\n    }\n\n    event Updated(\n        address user,\n        Profile profile\n    );\n\n    uint256 internal rate = 3600; // 1 hour\n    mapping (address => uint) internal lastUpdated;\n\n    modifier rateLimit() {\n        require(\n            (block.timestamp - lastUpdated[msg.sender]) > rate,\n            \"profiles can only be updated once per hour\"\n        );\n        _;\n    }\n\n    /**\n    * @notice emits updated event with caller along with the profile calldata\n    * rate limted to once per hour\n    * @param profile a struct containing profile data\n    *      name: a display name for the user\n    *      description: a description about the user\n    *      thumbnailURI: a URI to a thumnail image for the user\n    *      linkURI: a URI to external profile or website\n    */\n    function update(Profile calldata profile)\n        external\n        rateLimit\n    {\n        require(bytes(profile.name).length         < 32,   \"name too long\");\n        require(bytes(profile.description).length  < 512,  \"description too long\");\n        require(bytes(profile.thumbnailURI).length < 2048, \"thumbnail uri too long\");\n        require(bytes(profile.linkURI).length      < 2048, \"link uri too long\");\n\n        lastUpdated[msg.sender] = block.timestamp;\n\n        emit Updated(msg.sender, profile);\n    }\n}"
+    }
+  },
+  "settings": {
+    "optimizer": {
+      "enabled": false,
+      "runs": 200
+    },
+    "outputSelection": {
+      "*": {
+        "*": [
+          "abi",
+          "evm.bytecode",
+          "evm.deployedBytecode",
+          "evm.methodIdentifiers",
+          "metadata",
+          "devdoc",
+          "userdoc",
+          "storageLayout",
+          "evm.gasEstimates"
+        ],
+        "": [
+          "ast"
+        ]
+      }
+    },
+    "metadata": {
+      "useLiteralContent": true
+    }
+  }
+}
