@@ -177,27 +177,27 @@ quis nisi quis.`
       })
 
       it("reverts if link uri is longer than 2048 bytes", async () => {
-        const longURI = new Uint8Array(2049)
-        expect(longURI.length).to.eq(2049)
+        const longURI = '#'.repeat(2049)
+        expect(encoder.encode(longURI).length).to.eq(2049)
 
         await expect(
           profiles.connect(user).update(
           {
             ...profile,
-            linkURI: String(longURI)
+            linkURI: longURI
           }
         )).to.be.revertedWith("link uri too long")
       })
 
       it("reverts if thumbnail uri is longer than 2048 bytes", async () => {
-        const longURI = new Uint8Array(2049)
-        expect(longURI.length).to.eq(2049)
+        const longURI = '#'.repeat(2049)
+        expect(encoder.encode(longURI).length).to.eq(2049)
 
         await expect(
           profiles.connect(user).update(
           {
             ...profile,
-            thumbnailURI: String(longURI)
+            thumbnailURI: longURI
           }
         )).to.be.revertedWith("thumbnail uri too long")
       })
