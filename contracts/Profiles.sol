@@ -26,7 +26,7 @@ contract Profiles {
     uint256 internal rate = 3600; // 1 hour
     mapping (address => uint) internal lastUpdated;
 
-    modifier rateLimit() {
+    modifier limitRate() {
         require(
             (block.timestamp - lastUpdated[msg.sender]) > rate,
             "profiles can only be updated once per hour"
@@ -34,7 +34,7 @@ contract Profiles {
         _;
     }
 
-    modifier byteSizeLimit(Profile calldata profile) {
+    modifier limitByteSize(Profile calldata profile) {
         require(bytes(profile.name).length         <= 32,   "name too long");
         require(bytes(profile.description).length  <= 512,  "description too long");
         require(bytes(profile.thumbnailURI).length <= 2048, "thumbnail uri too long");
@@ -53,8 +53,8 @@ contract Profiles {
     */
     function update(Profile calldata profile)
         external
-        rateLimit
-        byteSizeLimit(profile)
+        limitRate
+        limitByteSize(profile)
     {
         lastUpdated[msg.sender] = block.timestamp;
 
