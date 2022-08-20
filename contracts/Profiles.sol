@@ -34,6 +34,14 @@ contract Profiles {
         _;
     }
 
+    modifier byteSizeLimit(Profile calldata profile) {
+        require(bytes(profile.name).length         <= 32,   "name too long");
+        require(bytes(profile.description).length  <= 512,  "description too long");
+        require(bytes(profile.thumbnailURI).length <= 2048, "thumbnail uri too long");
+        require(bytes(profile.linkURI).length      <= 2048, "link uri too long");
+        _;
+    }
+
     /**
     * @notice emits updated event with caller along with the profile calldata
     * rate limted to once per hour
@@ -46,12 +54,8 @@ contract Profiles {
     function update(Profile calldata profile)
         external
         rateLimit
+        byteSizeLimit(profile)
     {
-        require(bytes(profile.name).length         <= 32,   "name too long");
-        require(bytes(profile.description).length  <= 512,  "description too long");
-        require(bytes(profile.thumbnailURI).length <= 2048, "thumbnail uri too long");
-        require(bytes(profile.linkURI).length      <= 2048, "link uri too long");
-
         lastUpdated[msg.sender] = block.timestamp;
 
         emit Updated(msg.sender, profile);
