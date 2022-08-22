@@ -40,8 +40,8 @@ Our intention is to migrate to lens protocol, or something similar, once they op
 
 | chain | address |
 |---|---|
-|mumbai| [0x6615fbCf647208f131AA6CBA3bA274391E2aF8AE](https://mumbai.polygonscan.com/address/0x6615fbCf647208f131AA6CBA3bA274391E2aF8AE) |
-|polygon| [0x84595971a754120C390AB2901b11f7C3d18207C9](https://polygonscan.com/address/0x84595971a754120C390AB2901b11f7C3d18207C9) |
+|mumbai| [0x485210cd4205a658EAf35072b07032fE583756Fb](https://mumbai.polygonscan.com/address/0x485210cd4205a658EAf35072b07032fE583756Fb) |
+|polygon| [0x1acde240D4990CBD97DC60D7E36fE254b16ea569](https://polygonscan.com/address/0x1acde240D4990CBD97DC60D7E36fE254b16ea569) |
 
 ## Gas Benefits
 
