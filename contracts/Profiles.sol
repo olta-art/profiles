@@ -44,12 +44,12 @@ contract Profiles {
 
     /**
     * @notice emits updated event with caller along with the profile calldata
-    * rate limted to once per hour
+    * rate limted to once per hour per address
     * @param profile a struct containing profile data
-    *      name: a display name for the user
-    *      description: a description about the user
-    *      thumbnailURI: a URI to a thumnail image for the user
-    *      linkURI: a URI to external profile or website
+    *      name: a display name for the user, limited to 32 bytes
+    *      description: a description about the user, limited to 512 bytes
+    *      thumbnailURI: a URI to a thumbnail image for the user, limited to 2048 bytes
+    *      linkURI: a URI to external profile or website, limited to 2048 bytes
     */
     function update(Profile calldata profile)
         external
